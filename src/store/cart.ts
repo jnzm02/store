@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { CART_STORAGE } from '../composables/usePersistCart';
 import { useProductStore } from './products';
+import { useModalWindow } from './modal';
 
 export interface Purchase {
   productId: number;
@@ -38,6 +39,20 @@ export const useCartStore = defineStore({
       return Object.keys(this.contents).reduce((acc, id) => {
         return acc + products.items[id].price * this.contents[id].quantity;
       }, 0);
+    },
+
+    getCart(): CartPreview {
+      const products = useProductStore();
+      const product_id = useModalWindow().getProductId;
+      const product = this.contents[product_id];
+
+      return {
+        id: product.productId,
+        image: products.items[product.productId].image,
+        title: products.items[product.productId].title,
+        quantity: product.quantity,
+        cost: product.quantity * products.items[product.productId].price,
+      }
     },
 
     formattedCart(): CartPreview[] {

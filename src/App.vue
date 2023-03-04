@@ -3,6 +3,8 @@
     <input id="drawer-input" type="checkbox" class="drawer-toggle" />
     <div class="bg-base-100 text-base-content min-h-screen drawer-content">
       <Nav />
+
+      <ModalWindow v-if="shownStatus" />
       <router-view></router-view>
     </div>
     <div class="drawer-side">
@@ -24,16 +26,21 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
+import ModalWindow from './components/ModalWindow.vue'
 import Nav from './components/Nav.vue';
 import { usePersistCart } from './composables/usePersistCart';
 import { useCartStore } from './store/cart';
 import { useProductStore } from './store/products';
+import { useModalWindow } from "./store/modal"
 
+const modalWindow = useModalWindow();
 const productStore = useProductStore();
 const cartStore = useCartStore();
 
 productStore.fetchAll();
 usePersistCart();
+
+const shownStatus = computed(() => modalWindow.getShownStatus)
 
 const count = computed(() => cartStore.count);
 </script>

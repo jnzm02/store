@@ -16,7 +16,7 @@
                 <div class="btn-group">
                     <button class="btn btn-primary" @click="cartStore.remove(cartProduct.id)">-</button>
                     <button class="btn btn-ghost no-animation">{{ cartProduct.quantity }}</button>
-                    <button class="btn btn-primary" @click="cartStore.add(cartProduct.id)">+</button>
+                    <button class="btn btn-primary" @click="cartStore.add(cartProduct.id); ModalWindow.updateProductId(cartProduct.id)">+</button>
                 </div>
             </div>
         </div>
@@ -27,8 +27,10 @@
 import { useCartStore } from '../store/cart';
 import type { CartPreview } from '../store/cart'
 import { toCurrency } from '../shared/utils'
+import { useModalWindow } from '../store/modal';
 
 const cartStore = useCartStore()
+const ModalWindow = useModalWindow();
 
 defineProps<{
     cartProduct: CartPreview
